@@ -66,6 +66,14 @@ class FakePage:
             return clicked and on_click is None
 
         st.text_area, st.button = text_area, button
+        st.form = lambda *a, **k: _Ctx()
+        st.form_submit_button = lambda label, **k: label in clicks
+        components = types.ModuleType("streamlit.components.v1")
+        components.html = lambda *a, **k: None
+        st.components = types.ModuleType("streamlit.components")
+        st.components.v1 = components
+        self.monkeypatch.setitem(sys.modules, "streamlit.components", st.components)
+        self.monkeypatch.setitem(sys.modules, "streamlit.components.v1", components)
         self.monkeypatch.setitem(sys.modules, "streamlit", st)
         self.monkeypatch.syspath_prepend(str(ROOT))
         runpy.run_path(str(ROOT / "app_debug.py"), run_name="__main__")
@@ -103,11 +111,17 @@ def test_correct_code_is_marked_solved(page):
 def test_solution_is_refused_before_three_attempts_and_shown_after(page):
     page.run(clicks=["Show solution"])
     assert page.messages("warning")
-    assert not page.messages("code")
+    assert not [m for m in page.messages("code") if "ch.lower()" in str(m)]
     for _ in range(3):
         page.run(clicks=["Run my fix"])
     page.run(clicks=["Show solution"])
     assert any("ch.lower()" in str(m) for m in page.messages("code"))
+
+
+def test_page_shows_the_code_with_line_numbers_and_the_attempt_count(page):
+    page.run()
+    assert any(str(m).startswith("1 | def count_vowels") for m in page.messages("code"))
+    assert any("The solution unlocks after 3" in m for m in page.messages("caption"))
 
 
 def test_reset_restores_the_starter_code(page):

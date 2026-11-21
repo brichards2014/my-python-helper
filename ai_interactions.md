@@ -101,13 +101,13 @@ After testing the Glitch Coach, I said the game was too weak as a real-world tas
 - A diagnosis step (`debug_coach/diagnose.py`) that uses the `ast` module and the failing tests.
 - A planning agent (`debug_coach/agent.py`) with tiered hints, two retrieval sources, output checks, a fallback, a confidence score, and a recorded trace.
 - Six exercises (two each for easy, medium, hard), 12 bug-pattern notes, and 5 cited public references.
-- A command-line tool, a Streamlit page, an evaluation harness, 19 scripted student attempts, 92 new tests, a Mermaid diagram, and the README and model card.
+- A command-line tool, a Streamlit page, an evaluation harness, 19 scripted student attempts, 96 new tests, a Mermaid diagram, and the README and model card.
 
 The network was unavailable, so Claude wrote original exercises and cited public sources instead of copying exercise text. It read each cited page before including it.
 
 ### Verification
 
-- `python -m pytest`: 173 passed.
+- `python -m pytest`: 177 passed.
 - `python eval_debug.py`: 70 of 70 checks passed.
 - `python debug_cli.py demo --brief`: four scripted scenarios. The output is pasted in the README.
 - The Streamlit page was tested against a stand-in for the Streamlit API. A manual run with `python -m streamlit run app_debug.py` is still needed.

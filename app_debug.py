@@ -1,7 +1,10 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
 from coach.log import append_trace
 from debug_coach.agent import coach_submission, reveal_solution
+from debug_coach.editor import EDITOR_JS, number_lines
+from debug_coach.guardrails import REVEAL_AFTER_FAILED_ATTEMPTS
 from debug_coach.exercises import list_exercises
 
 st.set_page_config(page_title="Debug Coach", page_icon="🐞")
@@ -9,16 +12,20 @@ st.title("🐞 Debug Coach")
 st.caption("Fix the buggy Python function. The coach runs your code and gives hints, not answers.")
 
 exercises = {e.id: e for e in list_exercises()}
-exercise_id = st.sidebar.selectbox(
-    "Exercise",
-    list(exercises),
-    format_func=lambda i: f"[{exercises[i].difficulty}] {exercises[i].title}",
-)
-exercise = exercises[exercise_id]
-
 state = st.session_state
 state.setdefault("histories", {})
 state.setdefault("results", {})
+
+
+def label(i):
+    done = state.results.get(i) is not None and state.results[i].solved
+    return f"{'✓ ' if done else ''}[{exercises[i].difficulty}] {exercises[i].title}"
+
+
+exercise_id = st.sidebar.selectbox("Exercise", list(exercises), format_func=label)
+exercise = exercises[exercise_id]
+solved_count = sum(1 for r in state.results.values() if r.solved)
+st.sidebar.caption(f"Solved: {solved_count} of {len(exercises)}")
 history = state.histories.setdefault(exercise_id, [])
 editor_key = f"editor_{exercise_id}"
 
@@ -37,14 +44,20 @@ with st.expander("Where this exercise comes from"):
     for source in exercise.sources:
         st.markdown(f"- [{source['title']}]({source['url']})")
 
-code = st.text_area("Your code", key=editor_key, height=320)
-col1, col2, col3 = st.columns(3)
+components.html(EDITOR_JS, height=0)  # Tab indents and Enter keeps the indent in the code box
+st.caption("Tab indents, Shift+Tab removes an indent. Press Ctrl+Enter (or Cmd+Enter) to run.")
+with st.form(f"run_form_{exercise_id}"):
+    code = st.text_area("Your code", key=editor_key, height=320)
+    run_clicked = st.form_submit_button("Run my fix")
+col1, col2 = st.columns(2)
 with col1:
-    run_clicked = st.button("Run my fix")
-with col2:
     st.button("Reset to starter", on_click=reset_editor)
-with col3:
+with col2:
     reveal_clicked = st.button("Show solution")
+failed = sum(1 for a in history if a.tag not in ("solved", "invalid_input"))
+st.caption(f"Attempts so far: {len(history)}. The solution unlocks after {REVEAL_AFTER_FAILED_ATTEMPTS} real failed attempts (you have {failed}).")
+with st.expander("Your code with line numbers (hints refer to these)", expanded=True):
+    st.code(number_lines(code), language=None)
 
 if run_clicked:
     guidance = coach_submission(exercise, code, history)

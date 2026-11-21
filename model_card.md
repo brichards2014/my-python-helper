@@ -91,7 +91,7 @@ The baseline never points to a location or asks a question. Level 1 does both, a
 
 | Evidence | Result |
 |---|---|
-| `python -m pytest` | 173 passed |
+| `python -m pytest` | 177 passed |
 | `python eval_debug.py` | 70 of 70 checks passed |
 | Exercise data | All 6 starters fail some tests. All 6 solutions pass every test |
 | Scripted student attempts | 19 of 19 diagnosed as expected, including wrong fixes and an alternative correct fix |

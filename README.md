@@ -74,7 +74,7 @@ pip install -r requirements.txt
 | Show the agent trace | `python debug_cli.py check medium_1_add_item --trace` |
 | Show the solution (after 3 failed attempts) | `python debug_cli.py reveal medium_1_add_item` |
 | Run the scripted demo | `python debug_cli.py demo --brief` |
-| Open the browser page | `python -m streamlit run app_debug.py` |
+| Open the browser page (line numbers, Tab to indent, Ctrl+Enter to run) | `python -m streamlit run app_debug.py` |
 | Run the unit tests | `python -m pytest` |
 | Run the evaluation harness | `python eval_debug.py` |
 
@@ -267,7 +267,7 @@ $ python -m pytest -q
 ........................................................................ [ 41%]
 ........................................................................ [ 83%]
 .............................                                            [100%]
-173 passed
+177 passed
 ```
 
 Evaluation harness, summary (`python eval_debug.py --summary`). The full report with every check is in [logs/debug_eval_report.txt](logs/debug_eval_report.txt).
@@ -351,7 +351,7 @@ Level 1 asks a question about a specific test. Level 2 names the function or lin
 
 ## Testing Summary
 
-- **What worked.** 173 unit tests pass. The harness passes 70 of 70 checks. All 6 starters fail some tests, and all 6 solutions pass every test. The coach diagnosed 19 of 19 scripted attempts as expected. That includes a correct fix written differently from the reference solution, which is accepted.
+- **What worked.** 177 unit tests pass. The harness passes 70 of 70 checks. All 6 starters fail some tests, and all 6 solutions pass every test. The coach diagnosed 19 of 19 scripted attempts as expected. That includes a correct fix written differently from the reference solution, which is accepted.
 - **What the harness caught.** My first letter-case rule fired on the game exercise because inputs like `'Normal'` contain a capital letter. It misdiagnosed two attempts. I changed the rule to fire only when uppercase text separates the failing tests from the passing ones. I also dropped an early "numbers differ by 1" rule that would have mislabeled a forgotten vowel as off-by-one. Empty submissions could unlock the solution until a test showed it, and now they do not.
 - **What is weak.**
   - The 19 scripted attempts are ones I wrote while building the rules, so 19 of 19 overstates how the coach would do on real student code. No real students have used it.
@@ -381,7 +381,7 @@ I turn a small debugging exercise into a tutoring tool with checks around it: a 
 debug_cli.py            Command-line Debug Coach and scripted demo
 app_debug.py            Streamlit page for the Debug Coach
 eval_debug.py           Evaluation harness for the Debug Coach
-debug_coach/            sandbox.py, diagnose.py, agent.py, guardrails.py, exercises.py, scripted.py
+debug_coach/            sandbox.py, diagnose.py, agent.py, guardrails.py, exercises.py, scripted.py, editor.py
 exercises/              Six exercises: starter.py, solution.py, exercise.json (test cases)
 knowledge/debugging/    Bug-pattern notes with three hint levels
 data/public_references.json   Cited Python docs and CPython issues
