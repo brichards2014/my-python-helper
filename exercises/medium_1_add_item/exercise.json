@@ -1,0 +1,80 @@
+{
+  "id": "medium_1_add_item",
+  "title": "Add an item to a list",
+  "difficulty": "medium",
+  "description": "add_item(item, items) should return a list that contains item. If a list is passed in, add item to it. If no list is passed in, start a new list each time.",
+  "bug_tag": "mutable_default",
+  "origin": "Original exercise that demonstrates a documented Python pitfall.",
+  "sources": [
+    {
+      "title": "Python tutorial, 4.9.1 Default Argument Values",
+      "url": "https://docs.python.org/3/tutorial/controlflow.html"
+    },
+    {
+      "title": "CPython issue 26842: Python Tutorial 4.7.1, need to explain default parameter lifetime",
+      "url": "https://github.com/python/cpython/issues/71029"
+    }
+  ],
+  "cases": [
+    {
+      "name": "first call",
+      "expr": "add_item('a')",
+      "expect": [
+        "a"
+      ]
+    },
+    {
+      "name": "pass a list",
+      "expr": "add_item(3, [1, 2])",
+      "expect": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "name": "second call starts fresh",
+      "steps": [
+        "add_item('a')"
+      ],
+      "expr": "add_item('b')",
+      "expect": [
+        "b"
+      ]
+    },
+    {
+      "name": "three calls start fresh",
+      "steps": [
+        "add_item(1)",
+        "add_item(2)"
+      ],
+      "expr": "add_item(3)",
+      "expect": [
+        3
+      ]
+    },
+    {
+      "name": "passed list is updated",
+      "steps": [
+        "data = [9]",
+        "add_item(8, data)"
+      ],
+      "expr": "data",
+      "expect": [
+        9,
+        8
+      ]
+    },
+    {
+      "name": "fresh after a passed list",
+      "steps": [
+        "add_item(1, [5])"
+      ],
+      "expr": "add_item(2)",
+      "expect": [
+        2
+      ],
+      "hidden": true
+    }
+  ]
+}

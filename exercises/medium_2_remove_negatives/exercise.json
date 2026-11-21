@@ -1,0 +1,69 @@
+{
+  "id": "medium_2_remove_negatives",
+  "title": "Remove the negative numbers",
+  "difficulty": "medium",
+  "description": "remove_negatives(nums) should remove every negative number from nums, changing the list in place, and return the same list.",
+  "bug_tag": "modify_while_iterating",
+  "origin": "Original exercise that demonstrates a documented Python pitfall.",
+  "sources": [
+    {
+      "title": "Python tutorial, 4.2 for Statements",
+      "url": "https://docs.python.org/3/tutorial/controlflow.html"
+    }
+  ],
+  "cases": [
+    {
+      "name": "mixed values",
+      "expr": "remove_negatives([1, -2, 3, -4])",
+      "expect": [
+        1,
+        3
+      ]
+    },
+    {
+      "name": "no negatives",
+      "expr": "remove_negatives([1, 2, 3])",
+      "expect": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "name": "empty list",
+      "expr": "remove_negatives([])",
+      "expect": []
+    },
+    {
+      "name": "two negatives in a row",
+      "expr": "remove_negatives([-1, -2, 3])",
+      "expect": [
+        3
+      ]
+    },
+    {
+      "name": "all negative",
+      "expr": "remove_negatives([-5, -6, -7, -8])",
+      "expect": []
+    },
+    {
+      "name": "changes the list in place",
+      "steps": [
+        "data = [-1, -2, 3]",
+        "remove_negatives(data)"
+      ],
+      "expr": "data",
+      "expect": [
+        3
+      ]
+    },
+    {
+      "name": "negatives at the end",
+      "expr": "remove_negatives([2, -1, -1, -1])",
+      "expect": [
+        2
+      ],
+      "hidden": true
+    }
+  ]
+}

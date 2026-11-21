@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ref#python-tutorial-default-arguments",
+    "title": "Python tutorial, 4.9.1 Default Argument Values",
+    "summary": "States that a default value is evaluated only once, which matters when the default is a mutable object such as a list or dictionary. Shows the fix of using None as the default and creating the list inside the function.",
+    "keywords": "mutable default argument list dict evaluated once None",
+    "url": "https://docs.python.org/3/tutorial/controlflow.html",
+    "pattern": "mutable_default"
+  },
+  {
+    "id": "ref#cpython-26842",
+    "title": "CPython issue 26842: tutorial should explain default parameter lifetime",
+    "summary": "A public report asking the tutorial to explain how long default parameter values live. It was closed as won't fix, so the tutorial keeps its short warning.",
+    "keywords": "mutable default argument parameter lifetime list shared calls",
+    "url": "https://github.com/python/cpython/issues/71029",
+    "pattern": "mutable_default"
+  },
+  {
+    "id": "ref#python-tutorial-for-statements",
+    "title": "Python tutorial, 4.2 for Statements",
+    "summary": "Says that code which modifies a collection while iterating over it can be tricky to get right, and that it is usually more straightforward to loop over a copy or to build a new collection.",
+    "keywords": "modify list while iterating loop copy new collection remove",
+    "url": "https://docs.python.org/3/tutorial/controlflow.html",
+    "pattern": "modify_while_iterating"
+  },
+  {
+    "id": "ref#python-faq-lambda-loop",
+    "title": "Python Programming FAQ: why do lambdas defined in a loop all return the same result",
+    "summary": "Explains that functions created in a loop read the loop variable when they are called, so they all return the same result. Recommends binding the current value with a default argument, such as lambda n=x: n**2.",
+    "keywords": "closure lambda loop variable late binding default argument",
+    "url": "https://mail.python.org/pipermail/python-checkins/2013-January/118793.html",
+    "pattern": "late_binding"
+  },
+  {
+    "id": "ref#cpython-13094",
+    "title": "CPython issue 13094: need Programming FAQ entry for the behavior of closures",
+    "summary": "A public report asking for a Programming FAQ entry that explains how closures behave.",
+    "keywords": "closure lambda loop variable behavior faq",
+    "url": "https://www.python.org/pipermail/docs/2013-January/012247.html",
+    "pattern": "late_binding"
+  }
+]

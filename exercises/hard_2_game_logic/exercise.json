@@ -1,0 +1,93 @@
+{
+  "id": "hard_2_game_logic",
+  "title": "Fix the guessing game logic (Module 1)",
+  "difficulty": "hard",
+  "description": "Three functions from the guessing game have bugs. get_range_for_difficulty: Easy is 1 to 20, Normal is 1 to 50, Hard is 1 to 100, anything else is 1 to 50. check_guess returns (outcome, message): outcome is Win, Too High or Too Low, and the message tells the player to go LOWER after a high guess and HIGHER after a low guess. update_score: a win on attempt n scores 100 - 10*(n+1) with a minimum of 10, and every wrong guess costs 5 points.",
+  "bug_tag": "inverted_condition",
+  "origin": "Adapted from the Module 1 Game Glitch Investigator starter. Written for this project.",
+  "sources": [],
+  "cases": [
+    {
+      "name": "Easy range",
+      "expr": "get_range_for_difficulty('Easy')",
+      "expect": [
+        1,
+        20
+      ]
+    },
+    {
+      "name": "Normal range",
+      "expr": "get_range_for_difficulty('Normal')",
+      "expect": [
+        1,
+        50
+      ]
+    },
+    {
+      "name": "Hard range",
+      "expr": "get_range_for_difficulty('Hard')",
+      "expect": [
+        1,
+        100
+      ]
+    },
+    {
+      "name": "unknown difficulty",
+      "expr": "get_range_for_difficulty('Impossible')",
+      "expect": [
+        1,
+        50
+      ]
+    },
+    {
+      "name": "correct guess",
+      "expr": "check_guess(50, 50)",
+      "expect": [
+        "Win",
+        "Correct!"
+      ]
+    },
+    {
+      "name": "guess too high",
+      "expr": "check_guess(60, 50)",
+      "expect": [
+        "Too High",
+        "Go LOWER!"
+      ]
+    },
+    {
+      "name": "guess too low",
+      "expr": "check_guess(40, 50)",
+      "expect": [
+        "Too Low",
+        "Go HIGHER!"
+      ]
+    },
+    {
+      "name": "win on attempt 1",
+      "expr": "update_score(0, 'Win', 1)",
+      "expect": 80
+    },
+    {
+      "name": "win score has a floor",
+      "expr": "update_score(0, 'Win', 20)",
+      "expect": 10
+    },
+    {
+      "name": "wrong guess on an odd attempt",
+      "expr": "update_score(20, 'Too High', 1)",
+      "expect": 15
+    },
+    {
+      "name": "wrong guess on an even attempt",
+      "expr": "update_score(20, 'Too High', 2)",
+      "expect": 15
+    },
+    {
+      "name": "too low costs points",
+      "expr": "update_score(20, 'Too Low', 2)",
+      "expect": 15,
+      "hidden": true
+    }
+  ]
+}

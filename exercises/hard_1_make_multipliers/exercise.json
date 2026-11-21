@@ -1,0 +1,72 @@
+{
+  "id": "hard_1_make_multipliers",
+  "title": "Build a list of multiplier functions",
+  "difficulty": "hard",
+  "description": "make_multipliers(n) should return a list of n functions. The function at index i should multiply its argument by i.",
+  "bug_tag": "late_binding",
+  "origin": "Original exercise that demonstrates a documented Python pitfall.",
+  "sources": [
+    {
+      "title": "Python Programming FAQ entry: why do lambdas defined in a loop with different values all return the same result (added in this commit)",
+      "url": "https://mail.python.org/pipermail/python-checkins/2013-January/118793.html"
+    },
+    {
+      "title": "CPython issue 13094: need Programming FAQ entry for the behavior of closures",
+      "url": "https://www.python.org/pipermail/docs/2013-January/012247.html"
+    }
+  ],
+  "cases": [
+    {
+      "name": "length",
+      "expr": "len(make_multipliers(3))",
+      "expect": 3
+    },
+    {
+      "name": "empty",
+      "expr": "make_multipliers(0)",
+      "expect": []
+    },
+    {
+      "name": "index zero",
+      "expr": "make_multipliers(1)[0](5)",
+      "expect": 0
+    },
+    {
+      "name": "index one",
+      "expr": "make_multipliers(3)[1](7)",
+      "expect": 7
+    },
+    {
+      "name": "every function",
+      "expr": "[f(10) for f in make_multipliers(4)]",
+      "expect": [
+        0,
+        10,
+        20,
+        30
+      ]
+    },
+    {
+      "name": "functions are independent",
+      "expr": "[make_multipliers(3)[i](2) for i in range(3)]",
+      "expect": [
+        0,
+        2,
+        4
+      ]
+    },
+    {
+      "name": "larger list",
+      "expr": "[f(1) for f in make_multipliers(6)]",
+      "expect": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "hidden": true
+    }
+  ]
+}

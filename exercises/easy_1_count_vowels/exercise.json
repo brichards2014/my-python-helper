@@ -1,0 +1,42 @@
+{
+  "id": "easy_1_count_vowels",
+  "title": "Count the vowels",
+  "difficulty": "easy",
+  "description": "count_vowels(text) should return how many vowels (a, e, i, o, u, upper or lower case) are in text.",
+  "bug_tag": "case_sensitivity",
+  "origin": "Original exercise. No specific public report; case handling is a common beginner mistake.",
+  "sources": [],
+  "cases": [
+    {
+      "name": "lowercase word",
+      "expr": "count_vowels('banana')",
+      "expect": 3
+    },
+    {
+      "name": "no vowels",
+      "expr": "count_vowels('rhythm')",
+      "expect": 0
+    },
+    {
+      "name": "empty string",
+      "expr": "count_vowels('')",
+      "expect": 0
+    },
+    {
+      "name": "all uppercase vowels",
+      "expr": "count_vowels('AEIOU')",
+      "expect": 5
+    },
+    {
+      "name": "mixed case word",
+      "expr": "count_vowels('Education')",
+      "expect": 5
+    },
+    {
+      "name": "uppercase sentence",
+      "expr": "count_vowels('PYTHON IS FUN')",
+      "expect": 3,
+      "hidden": true
+    }
+  ]
+}

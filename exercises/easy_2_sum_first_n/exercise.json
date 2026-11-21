@@ -1,0 +1,42 @@
+{
+  "id": "easy_2_sum_first_n",
+  "title": "Sum the first n numbers",
+  "difficulty": "easy",
+  "description": "sum_first_n(nums, n) should return the sum of the first n items in nums. If n is larger than the list, sum every item.",
+  "bug_tag": "off_by_one",
+  "origin": "Original exercise. No specific public report; off-by-one errors in range() are a common beginner mistake.",
+  "sources": [],
+  "cases": [
+    {
+      "name": "first two",
+      "expr": "sum_first_n([1, 2, 3, 4], 2)",
+      "expect": 3
+    },
+    {
+      "name": "all items",
+      "expr": "sum_first_n([5, 5, 5], 3)",
+      "expect": 15
+    },
+    {
+      "name": "n larger than the list",
+      "expr": "sum_first_n([1, 1], 10)",
+      "expect": 2
+    },
+    {
+      "name": "n is zero",
+      "expr": "sum_first_n([4, 4], 0)",
+      "expect": 0
+    },
+    {
+      "name": "one item",
+      "expr": "sum_first_n([7, 8, 9], 1)",
+      "expect": 7
+    },
+    {
+      "name": "ones",
+      "expr": "sum_first_n([1, 1, 1, 1], 4)",
+      "expect": 4,
+      "hidden": true
+    }
+  ]
+}
