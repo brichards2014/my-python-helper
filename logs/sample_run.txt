@@ -1,0 +1,92 @@
+
+=== Scenario 1: Normal, player follows the coach ===
+Difficulty Normal: guess 1 to 50, 8 attempts. (Secret is 37, hidden from the coach.)
+  Coach: Start with 25. The middle of 1 to 50 gives the most information from the first hint.
+  Context: On Normal, midpoint players won 100% of games and averaged 4.9 guesses. Random players won 85% and averaged 5.8.
+  [situation=opening confidence=1.0 sources=opening_moves#opening-guess, past_games#normal]
+
+> guess: '25'
+  Attempt 1/8: Too Low. 📈 Go HIGHER!  Score: -5
+  Coach: Guess 38. It splits the 25 remaining numbers in half. At most 5 guesses will find the secret.
+  [situation=narrow confidence=0.99 sources=binary_search#midpoint-strategy, past_games#normal]
+
+> guess: '38'
+  Attempt 2/8: Too High. 📉 Go LOWER!  Score: -10
+  Coach: Guess 31. It splits the 12 remaining numbers in half. At most 4 guesses will find the secret.
+  [situation=narrow confidence=0.99 sources=binary_search#midpoint-strategy, past_games#normal]
+
+> guess: '31'
+  Attempt 3/8: Too Low. 📈 Go HIGHER!  Score: -15
+  Coach: Guess 34. It splits the 6 remaining numbers in half. At most 3 guesses will find the secret.
+  [situation=narrow confidence=0.99 sources=binary_search#midpoint-strategy, past_games#normal]
+
+> guess: '34'
+  Attempt 4/8: Too Low. 📈 Go HIGHER!  Score: -20
+  Coach: Only 3 numbers remain, from 35 to 37. Guess 36.
+  [situation=few_left confidence=1.0 sources=endgame#few-candidates-left, past_games#normal]
+
+> guess: '36'
+  Attempt 5/8: Too Low. 📈 Go HIGHER!  Score: -25
+  Coach: Only 37 is left. Guess 37.
+  [situation=last_number confidence=1.0 sources=endgame#one-number-left, past_games#normal]
+
+> guess: '37'
+  Attempt 6/8: Win. 🎉 Correct!  Score: 5
+  You won in 6 attempts.
+
+=== Scenario 2: Hard, player ignores a hint ===
+Difficulty Hard: guess 1 to 100, 5 attempts. (Secret is 88, hidden from the coach.)
+  Coach: Start with 50. The middle of 1 to 100 gives the most information from the first hint.
+  Context: On Hard, midpoint players won 30% of games and averaged 4.8 guesses. Random players won 22% and averaged 4.8.
+  [situation=opening confidence=1.0 sources=opening_moves#opening-guess, past_games#hard]
+
+> guess: '50'
+  Attempt 1/5: Too Low. 📈 Go HIGHER!  Score: -5
+  Coach: 4 attempts left and 50 numbers remain, so a win cannot be guaranteed. Guess 75 for the best chance.
+  [situation=endgame confidence=1.0 sources=endgame#running-out-of-attempts, past_games#hard]
+
+> guess: '20'
+  Attempt 2/5: Too Low. 📈 Go HIGHER!  Score: -10
+  Coach: Your last guess 20 was already ruled out by an earlier hint. The secret is between 51 and 100. Guess 75.
+  [situation=wasted_guess confidence=1.0 sources=hint_discipline#wasted-guess, past_games#hard]
+
+> guess: '75'
+  Attempt 3/5: Too Low. 📈 Go HIGHER!  Score: -15
+  Coach: 2 attempts left and 25 numbers remain, so a win cannot be guaranteed. Guess 88 for the best chance.
+  [situation=endgame confidence=1.0 sources=endgame#running-out-of-attempts, past_games#hard]
+
+> guess: '88'
+  Attempt 4/5: Win. 🎉 Correct!  Score: 35
+  You won in 4 attempts.
+
+=== Scenario 3: Easy, bad inputs are rejected ===
+Difficulty Easy: guess 1 to 20, 6 attempts. (Secret is 7, hidden from the coach.)
+  Coach: Start with 10. The middle of 1 to 20 gives the most information from the first hint.
+  Context: On Easy, midpoint players won 100% of games and averaged 3.7 guesses. Random players won 85% and averaged 4.4.
+  [situation=opening confidence=1.0 sources=opening_moves#opening-guess, past_games#easy]
+
+> guess: ''
+  Rejected: Enter a guess. (no attempt used)
+
+> guess: 'abc'
+  Rejected: That is not a number. (no attempt used)
+
+> guess: '500'
+  Rejected: Enter a number from 1 to 20. (no attempt used)
+
+> guess: '-3'
+  Rejected: Enter a number from 1 to 20. (no attempt used)
+
+> guess: '10'
+  Attempt 1/6: Too High. 📉 Go LOWER!  Score: -5
+  Coach: Guess 5. It splits the 9 remaining numbers in half. At most 4 guesses will find the secret.
+  [situation=narrow confidence=0.99 sources=binary_search#midpoint-strategy, past_games#easy]
+
+> guess: '7.9'
+  Attempt 2/6: Win. 🎉 Correct!  Score: 65
+  You won in 2 attempts.
+
+=== Scenario 4: corrupted history is refused ===
+History: guess 10 was Too Low, then guess 5 was Too High (impossible).
+  Coach: The hints contradict each other, so no guess is suggested. Start a new game.
+  [situation=contradiction confidence=0.0 suggested_guess=None]

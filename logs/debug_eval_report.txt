@@ -1,0 +1,103 @@
+DEBUG COACH EVALUATION
+======================================================================
+
+[exercises]
+  PASS  easy_1_count_vowels: starter fails some tests, solution passes all  (starter 3/6, solution 6/6)
+  PASS  easy_2_sum_first_n: starter fails some tests, solution passes all  (starter 2/6, solution 6/6)
+  PASS  medium_1_add_item: starter fails some tests, solution passes all  (starter 4/6, solution 6/6)
+  PASS  medium_2_remove_negatives: starter fails some tests, solution passes all  (starter 3/7, solution 7/7)
+  PASS  hard_1_make_multipliers: starter fails some tests, solution passes all  (starter 3/7, solution 7/7)
+  PASS  hard_2_game_logic: starter fails some tests, solution passes all  (starter 7/12, solution 12/12)
+
+[diagnosis]
+  PASS  easy_1_count_vowels: starter code  (expected case_sensitivity, got case_sensitivity)
+  PASS  easy_1_count_vowels: same code again  (expected case_sensitivity, got case_sensitivity)
+  PASS  easy_1_count_vowels: forgot the letter u  (expected wrong_value, got wrong_value)
+  PASS  easy_1_count_vowels: correct fix  (expected solved, got solved)
+  PASS  easy_2_sum_first_n: starter code  (expected off_by_one, got off_by_one)
+  PASS  easy_2_sum_first_n: range(n + 1)  (expected wrong_value, got wrong_value)
+  PASS  easy_2_sum_first_n: correct fix  (expected solved, got solved)
+  PASS  medium_1_add_item: starter code  (expected mutable_default, got mutable_default)
+  PASS  medium_1_add_item: None default without creating a list  (expected runtime_error, got runtime_error)
+  PASS  medium_1_add_item: correct fix  (expected solved, got solved)
+  PASS  medium_2_remove_negatives: starter code  (expected modify_while_iterating, got modify_while_iterating)
+  PASS  medium_2_remove_negatives: returns a new list instead of changing nums  (expected wrong_value, got wrong_value)
+  PASS  medium_2_remove_negatives: correct fix  (expected solved, got solved)
+  PASS  hard_1_make_multipliers: starter code  (expected late_binding, got late_binding)
+  PASS  hard_1_make_multipliers: different correct fix (helper function)  (expected solved, got solved)
+  PASS  hard_2_game_logic: starter code  (expected inverted_condition, got inverted_condition)
+  PASS  hard_2_game_logic: fixed check_guess only  (expected wrong_value, got wrong_value)
+  PASS  hard_2_game_logic: also fixed the ranges  (expected wrong_value, got wrong_value)
+  PASS  hard_2_game_logic: correct fix  (expected solved, got solved)
+  PASS  overall accuracy 19/19
+
+[retrieval]
+  PASS  query for syntax_error returns the syntax_error note  (top note pattern: syntax_error)
+  PASS  query for blocked_code returns the blocked_code note  (top note pattern: blocked_code)
+  PASS  query for infinite_loop returns the infinite_loop note  (top note pattern: infinite_loop)
+  PASS  query for load_error returns the load_error note  (top note pattern: load_error)
+  PASS  query for runtime_error returns the runtime_error note  (top note pattern: runtime_error)
+  PASS  query for mutable_default returns the mutable_default note  (top note pattern: mutable_default)
+  PASS  query for modify_while_iterating returns the modify_while_iterating note  (top note pattern: modify_while_iterating)
+  PASS  query for late_binding returns the late_binding note  (top note pattern: late_binding)
+  PASS  query for off_by_one returns the off_by_one note  (top note pattern: off_by_one)
+  PASS  query for inverted_condition returns the inverted_condition note  (top note pattern: inverted_condition)
+  PASS  query for case_sensitivity returns the case_sensitivity note  (top note pattern: case_sensitivity)
+  PASS  query for wrong_value returns the wrong_value note  (top note pattern: wrong_value)
+  PASS  public references found for mutable_default  (ref#cpython-26842, ref#python-tutorial-default-arguments)
+  PASS  public references found for modify_while_iterating  (ref#python-tutorial-for-statements)
+  PASS  public references found for late_binding  (ref#python-faq-lambda-loop, ref#cpython-13094)
+
+[escalation]
+  PASS  easy_1_count_vowels: same mistake repeated gives levels 1, 2, 3, 3 with different hints  (levels [1, 2, 3, 3])
+  PASS  easy_2_sum_first_n: same mistake repeated gives levels 1, 2, 3, 3 with different hints  (levels [1, 2, 3, 3])
+  PASS  medium_1_add_item: same mistake repeated gives levels 1, 2, 3, 3 with different hints  (levels [1, 2, 3, 3])
+  PASS  medium_2_remove_negatives: same mistake repeated gives levels 1, 2, 3, 3 with different hints  (levels [1, 2, 3, 3])
+  PASS  hard_1_make_multipliers: same mistake repeated gives levels 1, 2, 3, 3 with different hints  (levels [1, 2, 3, 3])
+  PASS  hard_2_game_logic: same mistake repeated gives levels 1, 2, 3, 3 with different hints  (levels [1, 2, 3, 3])
+  PASS  a different kind of failure restarts at level 1  (level 1)
+
+[leak]
+  PASS  no solution line appears in 31 generated hints  (leaks: [])
+  PASS  control: the leak check flags a hint that contains a solution line
+
+[sandbox]
+  PASS  infinite loop times out  (status timeout)
+  PASS  syntax error is reported  (status syntax_error)
+  PASS  import os is blocked  (status blocked)
+  PASS  open() is blocked  (status blocked)
+  PASS  input() is blocked  (status blocked)
+  PASS  error at load time is reported  (status load_error)
+  PASS  huge printed output is truncated and the run still completes  (status ok)
+  PASS  a crashing function fails its tests without stopping the run  (0 passed)
+  PASS  empty submission is refused before running  (The submission is empty. Write your fix and run it again.)
+  PASS  oversized submission is refused  (The submission is too long for this exercise. Keep only the function you are fixing.)
+
+[reveal]
+  PASS  solution is refused after 0 failed attempts
+  PASS  solution is refused after 1 failed attempts
+  PASS  solution is refused after 2 failed attempts
+  PASS  solution is shown after 3 failed attempts
+  PASS  empty submissions do not unlock the solution
+
+[fallback]
+  PASS  a broken hint template is replaced by a safe fallback  (confidence 0.54)
+  PASS  an empty knowledge base still gives a safe hint  (3 of 6 tests fail. Start with `count_vowels('AEIOU')`: expected 5, got 0. Work through that input by hand.)
+  PASS  a note that does not match the diagnosis is not used  (3 of 6 tests fail. Start with `count_vowels('AEIOU')`: expected 5, got 0. Work through that input by hand.)
+
+[progress]
+  PASS  more passing tests is reported as progress  (Progress: 6 of 6 tests pass, up from 3.)
+  PASS  fewer passing tests is reported as a regression  (Regression: 3 of 6 tests pass, down from 5. Your last change broke something that worked.)
+
+HINT STYLE: plain test report vs coach, 6 exercises
+----------------------------------------------------------------------
+                     avg words  asks a question  names function/line  quotes a test input
+Plain test report         13.5               0%                   0%                   0%
+Coach hint level 1        25.3             100%                 100%                 100%
+Coach hint level 2        26.3              17%                 100%                   0%
+Coach hint level 3        30.8               0%                   0%                   0%
+
+CONFIDENCE over 13 failing scripted attempts: average 0.88, lowest 0.79
+
+======================================================================
+RESULT: 70/70 checks passed

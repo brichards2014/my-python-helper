@@ -1,0 +1,214 @@
+
+=== Scenario 1: Count the vowels (easy) ===
+count_vowels(text) should return how many vowels (a, e, i, o, u, upper or lower case) are in text.
+
+--- Attempt 1: starter code ---
+Tests: 3 of 6 pass
+  PASS  lowercase word
+  PASS  no vowels
+  PASS  empty string
+  FAIL  all uppercase vowels  (expected 5, got 0)
+  FAIL  mixed case word  (expected 5, got 4)
+  FAIL  uppercase sentence
+Coach, hint level 1 of 3: Test `count_vowels('AEIOU')`: expected 5, got 0. Compare this input with the inputs that pass. What is different about the letters?
+  [pattern=case_sensitivity confidence=0.89 sources=patterns#letter-case]
+
+--- Attempt 2: same code again ---
+Tests: 3 of 6 pass
+  PASS  lowercase word
+  PASS  no vowels
+  PASS  empty string
+  FAIL  all uppercase vowels  (expected 5, got 0)
+  FAIL  mixed case word  (expected 5, got 4)
+  FAIL  uppercase sentence
+Coach, hint level 2 of 3: count_vowels treats uppercase and lowercase letters as different characters. In Python, "A" is not equal to "a".
+  [pattern=case_sensitivity confidence=0.89 sources=patterns#letter-case]
+
+--- Attempt 3: forgot the letter u ---
+Tests: 3 of 6 pass
+  PASS  lowercase word
+  PASS  no vowels
+  PASS  empty string
+  FAIL  all uppercase vowels  (expected 5, got 4)
+  FAIL  mixed case word  (expected 5, got 4)
+  FAIL  uppercase sentence
+Coach, hint level 1 of 3: 3 of 6 tests fail. Start with `count_vowels('AEIOU')`: expected 5, got 4. Work through that input by hand. Where does your code first differ from your hand result?
+  [pattern=wrong_value confidence=0.79 sources=patterns#wrong-result]
+
+--- Attempt 4: correct fix ---
+Tests: 6 of 6 pass
+  PASS  lowercase word
+  PASS  no vowels
+  PASS  empty string
+  PASS  all uppercase vowels
+  PASS  mixed case word
+  PASS  uppercase sentence
+Progress: 6 of 6 tests pass, up from 3.
+Solved: All 6 tests pass. Normalize case before comparing text.
+  [pattern=solved confidence=1.0 sources=none]
+
+=== Scenario 2: Add an item to a list (medium) ===
+add_item(item, items) should return a list that contains item. If a list is passed in, add item to it. If no list is passed in, start a new list each time.
+
+--- Attempt 1: starter code ---
+Tests: 4 of 6 pass
+  PASS  first call
+  PASS  pass a list
+  FAIL  second call starts fresh  (expected ['b'], got ['a', 'b'])
+  FAIL  three calls start fresh  (expected [3], got [1, 2, 3])
+  PASS  passed list is updated
+  PASS  fresh after a passed list
+Coach, hint level 1 of 3: Look at `add_item('b')`: expected ["b"], got ["a", "b"]. Something from an earlier call is still there. Where could a value be stored between calls?
+  [pattern=mutable_default confidence=0.96 sources=patterns#mutable-default-argument]
+
+--- Attempt 2: same code again ---
+Tests: 4 of 6 pass
+  PASS  first call
+  PASS  pass a list
+  FAIL  second call starts fresh  (expected ['b'], got ['a', 'b'])
+  FAIL  three calls start fresh  (expected [3], got [1, 2, 3])
+  PASS  passed list is updated
+  PASS  fresh after a passed list
+Coach, hint level 2 of 3: The default value at line 1 is created once, when the function is defined, and every call shares it. A list or dictionary used as a default keeps its changes.
+Read more: CPython issue 26842: tutorial should explain default parameter lifetime (https://github.com/python/cpython/issues/71029)
+Read more: Python tutorial, 4.9.1 Default Argument Values (https://docs.python.org/3/tutorial/controlflow.html)
+  [pattern=mutable_default confidence=0.96 sources=patterns#mutable-default-argument, ref#cpython-26842, ref#python-tutorial-default-arguments]
+
+--- Attempt 3: same code a third time ---
+Tests: 4 of 6 pass
+  PASS  first call
+  PASS  pass a list
+  FAIL  second call starts fresh  (expected ['b'], got ['a', 'b'])
+  FAIL  three calls start fresh  (expected [3], got [1, 2, 3])
+  PASS  passed list is updated
+  PASS  fresh after a passed list
+Coach, hint level 3 of 3: Use None as the default value. Inside the function, create a new list only when the argument is None, then work with that list.
+Read more: CPython issue 26842: tutorial should explain default parameter lifetime (https://github.com/python/cpython/issues/71029)
+Read more: Python tutorial, 4.9.1 Default Argument Values (https://docs.python.org/3/tutorial/controlflow.html)
+  [pattern=mutable_default confidence=0.96 sources=patterns#mutable-default-argument, ref#cpython-26842, ref#python-tutorial-default-arguments]
+
+--- Attempt 4: correct fix ---
+Tests: 6 of 6 pass
+  PASS  first call
+  PASS  pass a list
+  PASS  second call starts fresh
+  PASS  three calls start fresh
+  PASS  passed list is updated
+  PASS  fresh after a passed list
+Progress: 6 of 6 tests pass, up from 4.
+Solved: All 6 tests pass. Default values are evaluated once at definition time. Use None as the default and build a fresh object inside the function.
+  [pattern=solved confidence=1.0 sources=none]
+
+=== Scenario 3: Fix the guessing game logic (Module 1) (hard) ===
+Three functions from the guessing game have bugs. get_range_for_difficulty: Easy is 1 to 20, Normal is 1 to 50, Hard is 1 to 100, anything else is 1 to 50. check_guess returns (outcome, message): outcome is Win, Too High or Too Low, and the message tells the player to go LOWER after a high guess and HIGHER after a low guess. update_score: a win on attempt n scores 100 - 10*(n+1) with a minimum of 10, and every wrong guess costs 5 points.
+
+--- Attempt 1: starter code ---
+Tests: 7 of 12 pass
+  PASS  Easy range
+  FAIL  Normal range  (expected [1, 50], got [1, 100])
+  FAIL  Hard range  (expected [1, 100], got [1, 50])
+  PASS  unknown difficulty
+  PASS  correct guess
+  FAIL  guess too high  (expected ['Too High', 'Go LOWER!'], got ['Too High', 'Go HIGHER!'])
+  FAIL  guess too low  (expected ['Too Low', 'Go HIGHER!'], got ['Too Low', 'Go LOWER!'])
+  PASS  win on attempt 1
+  PASS  win score has a floor
+  PASS  wrong guess on an odd attempt
+  FAIL  wrong guess on an even attempt  (expected 15, got 25)
+  PASS  too low costs points
+Coach, hint level 1 of 3: Test `check_guess(60, 50)`: expected ["Too High", "Go LOWER!"], got ["Too High", "Go HIGHER!"]. The answer is the opposite of what is needed. Which branch of check_guess handles this input?
+  [pattern=inverted_condition confidence=0.91 sources=patterns#inverted-condition-or-swapped-result]
+
+--- Attempt 2: fixed check_guess only ---
+Tests: 9 of 12 pass
+  PASS  Easy range
+  FAIL  Normal range  (expected [1, 50], got [1, 100])
+  FAIL  Hard range  (expected [1, 100], got [1, 50])
+  PASS  unknown difficulty
+  PASS  correct guess
+  PASS  guess too high
+  PASS  guess too low
+  PASS  win on attempt 1
+  PASS  win score has a floor
+  PASS  wrong guess on an odd attempt
+  FAIL  wrong guess on an even attempt  (expected 15, got 25)
+  PASS  too low costs points
+Progress: 9 of 12 tests pass, up from 7.
+Coach, hint level 1 of 3: 3 of 12 tests fail. Start with `get_range_for_difficulty('Normal')`: expected [1, 50], got [1, 100]. Work through that input by hand. Where does your code first differ from your hand result?
+  [pattern=wrong_value confidence=0.79 sources=patterns#wrong-result]
+
+--- Attempt 3: also fixed the ranges ---
+Tests: 11 of 12 pass
+  PASS  Easy range
+  PASS  Normal range
+  PASS  Hard range
+  PASS  unknown difficulty
+  PASS  correct guess
+  PASS  guess too high
+  PASS  guess too low
+  PASS  win on attempt 1
+  PASS  win score has a floor
+  PASS  wrong guess on an odd attempt
+  FAIL  wrong guess on an even attempt  (expected 15, got 25)
+  PASS  too low costs points
+Progress: 11 of 12 tests pass, up from 9.
+Coach, hint level 1 of 3: 1 of 12 tests fail. Start with `update_score(20, 'Too High', 2)`: expected 15, got 25. Work through that input by hand. Where does your code first differ from your hand result?
+  [pattern=wrong_value confidence=0.79 sources=patterns#wrong-result]
+
+--- Attempt 4: correct fix ---
+Tests: 12 of 12 pass
+  PASS  Easy range
+  PASS  Normal range
+  PASS  Hard range
+  PASS  unknown difficulty
+  PASS  correct guess
+  PASS  guess too high
+  PASS  guess too low
+  PASS  win on attempt 1
+  PASS  win score has a floor
+  PASS  wrong guess on an odd attempt
+  PASS  wrong guess on an even attempt
+  PASS  too low costs points
+Progress: 12 of 12 tests pass, up from 11.
+Solved: All 12 tests pass. Check each branch against the specification, one input at a time.
+  [pattern=solved confidence=1.0 sources=none]
+
+=== Scenario 4: guardrails ===
+
+--- syntax error ---
+Tests: 0 of 6 pass
+  The tests could not run (syntax_error): invalid syntax
+Coach, hint level 1 of 3: Python could not read your code, so no test ran. Read the error message. It points near line 1.
+  [pattern=syntax_error confidence=1.0 sources=errors#syntax-error]
+
+--- blocked import ---
+Tests: 0 of 6 pass
+  The tests could not run (blocked): import of 'os' is not allowed in exercises
+Coach, hint level 1 of 3: The checker blocked something in your code: import of 'os' is not allowed in exercises.
+  [pattern=blocked_code confidence=1.0 sources=errors#blocked-code]
+
+--- starter code, still buggy ---
+Tests: 4 of 6 pass
+  PASS  first call
+  PASS  pass a list
+  FAIL  second call starts fresh  (expected ['b'], got ['a', 'b'])
+  FAIL  three calls start fresh  (expected [3], got [1, 2, 3])
+  PASS  passed list is updated
+  PASS  fresh after a passed list
+Progress: 4 of 6 tests pass, up from 0.
+Coach, hint level 1 of 3: Look at `add_item('b')`: expected ["b"], got ["a", "b"]. Something from an earlier call is still there. Where could a value be stored between calls?
+  [pattern=mutable_default confidence=0.96 sources=patterns#mutable-default-argument]
+
+--- asking for the solution too early ---
+Try 2 more time(s) before viewing the solution. Each run gives a new hint.
+
+--- asking for the solution after 3 failed attempts ---
+def add_item(item, items=None):
+    """Return a list that contains item.
+
+    If items is given, add item to it. If it is not given, start a new list.
+    """
+    if items is None:
+        items = []
+    items.append(item)
+    return items

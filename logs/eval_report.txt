@@ -1,0 +1,74 @@
+GLITCH COACH EVALUATION
+============================================================
+
+[scenario]
+  PASS  opening on Normal  (opening, guess 25, confidence 1.0)
+  PASS  opening on Easy  (opening, guess 10, confidence 1.0)
+  PASS  opening on Hard  (opening, guess 50, confidence 1.0)
+  PASS  after Too High at 30  (narrow, guess 15, confidence 0.99)
+  PASS  after Too Low at 25  (narrow, guess 38, confidence 0.99)
+  PASS  wasted guess after Too Low  (wasted_guess, guess 38, confidence 1.0)
+  PASS  repeated guess  (wasted_guess, guess 38, confidence 1.0)
+  PASS  endgame on Hard  (endgame, guess 67, confidence 1.0)
+  PASS  two numbers left  (few_left, guess 13, confidence 1.0)
+  PASS  one number left  (last_number, guess 14, confidence 1.0)
+
+[retrieval]
+  PASS  opening_moves#opening-guess  (top hit: opening_moves#opening-guess)
+  PASS  hint_discipline#wasted-guess  (top hit: hint_discipline#wasted-guess)
+  PASS  endgame#one-number-left  (top hit: endgame#one-number-left)
+  PASS  endgame#few-candidates-left  (top hit: endgame#few-candidates-left)
+  PASS  endgame#running-out-of-attempts  (top hit: endgame#running-out-of-attempts)
+  PASS  binary_search#midpoint-strategy  (top hit: binary_search#midpoint-strategy)
+  PASS  history source returns Easy  (top hit: Easy)
+  PASS  history source returns Normal  (top hit: Normal)
+  PASS  history source returns Hard  (top hit: Hard)
+  PASS  off-topic query returns nothing
+
+[guardrail]
+  PASS  parse_guess rejects ''  (Enter a guess.)
+  PASS  parse_guess rejects 'None'  (Enter a guess.)
+  PASS  parse_guess rejects 'abc'  (That is not a number.)
+  PASS  parse_guess rejects '1e3'  (That is not a number.)
+  PASS  parse_guess rejects '999999999999'  (That is not a number.)
+  PASS  out-of-range guess -5 is rejected  (Enter a number from 1 to 50.)
+  PASS  out-of-range guess 0 is rejected  (Enter a number from 1 to 50.)
+  PASS  out-of-range guess 51 is rejected  (Enter a number from 1 to 50.)
+  PASS  out-of-range guess 500 is rejected  (Enter a number from 1 to 50.)
+  PASS  coach rejects history: guess outside range  (The game history could not be read, so no guess is suggested.)
+  PASS  coach rejects history: unknown outcome  (The game history could not be read, so no guess is suggested.)
+  PASS  coach rejects history: entry is not a pair  (The game history could not be read, so no guess is suggested.)
+  PASS  coach refuses contradictory hints  (The hints contradict each other, so no guess is suggested. Start a new game.)
+  PASS  broken template is revised to a safe fallback  (confidence 0.4)
+  PASS  model rewrite with an invented number is rejected
+  PASS  grounded model rewrite is accepted
+
+[invariant]
+  PASS  Easy: secret stays in range for all 20 secrets  (violations: []; coach won 20/20)
+  PASS  Normal: secret stays in range for all 50 secrets  (violations: []; coach won 50/50)
+  PASS  Hard: secret stays in range for all 100 secrets  (violations: []; coach won 31/100)
+
+[style]
+  PASS  advice is at most 40 words and always names a number  (max 19 words, 100% with a number)
+
+[simulation]
+  PASS  Easy: coach player is at least as good as hint-only player
+  PASS  Normal: coach player is at least as good as hint-only player
+  PASS  Hard: coach player is at least as good as hint-only player
+
+SIMULATION: 300 games per difficulty, seed 7
+------------------------------------------------------------
+Difficulty  Attempts  Best possible  Hint-only win/avg  Coach win/avg
+Easy        6           100%           87% / 4.3       100% / 3.7
+Normal      8           100%           84% / 5.7       100% / 5.0
+Hard        5            31%           24% / 4.8        28% / 4.7
+(avg = guesses used per game, a lost game counts as the attempt limit)
+
+ADVICE STYLE over 300 sampled states
+------------------------------------------------------------
+average words 17.3, longest 19, advice with a concrete number 100%
+confidence: average 1.00, lowest 0.99
+Module 1 hint for comparison (223 states with a guess): average words 3.0, hints with a concrete number 0%
+
+============================================================
+RESULT: 43/43 checks passed

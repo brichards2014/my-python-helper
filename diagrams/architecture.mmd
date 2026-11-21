@@ -1,0 +1,46 @@
+flowchart TD
+    Student([Student]) -->|edits the buggy code and clicks Run| UI["Streamlit page app_debug.py<br/>or CLI debug_cli.py"]
+    Ex[("exercises/<br/>starter code, test cases,<br/>reference solution")] --> UI
+
+    UI --> Validate["1. Validate<br/>not empty, size limit"]
+
+    subgraph Sandbox [Sandbox: debug_coach/sandbox.py]
+        Static["Static check<br/>syntax, blocked imports and builtins"] --> Runner["Separate process<br/>time limit, output cap,<br/>each test on a fresh copy"]
+    end
+    Validate --> Static
+    Runner --> Results[Test results]
+
+    subgraph Agent [Debug Coach agent: debug_coach/agent.py]
+        Diagnose["2. Diagnose<br/>AST pattern checks and<br/>rules over failing tests"] --> Plan["3. Plan<br/>hint level from attempt history,<br/>retrieval query for the pattern"]
+        Plan --> Retrieve["4. Retrieve<br/>BM25 search"]
+        Retrieve --> Compose["5. Compose<br/>fill the hint template<br/>for this level"]
+        Compose --> Check{"6. Check<br/>word limit, no unfilled template,<br/>no solution line, note matches diagnosis"}
+        Check -->|a check fails| Revise["Revise<br/>safe fallback hint"]
+        Revise --> Check
+        Check -->|all pass| Score["7. Confidence score"]
+    end
+    Results --> Diagnose
+
+    Notes[("knowledge/debugging/<br/>bug-pattern notes,<br/>3 hint levels each")] --> Retrieve
+    Refs[("data/public_references.json<br/>cited Python docs and<br/>CPython issues")] --> Retrieve
+
+    Score --> Output["Test results, hint, references,<br/>progress note, trace"]
+    Output --> UI
+    UI -->|hint and Why this advice? panel| Student
+
+    UI -->|Show solution| Gate{"Reveal gate<br/>3 real failed attempts?"}
+    Gate -->|yes| Solution[("solution.py")]
+    Gate -->|no, keep trying| UI
+
+    Score --> Logs[("logs/<br/>coach.log, traces")]
+
+    subgraph Testing [Testing and human review]
+        Pytest["pytest suite<br/>sandbox, diagnosis, agent,<br/>CLI, Streamlit page"]
+        Harness["eval_debug.py<br/>scripted student attempts,<br/>leak check, guardrails,<br/>plain report vs coach"]
+    end
+    Pytest -.->|checks| Agent
+    Harness -.->|checks| Agent
+    Harness -.->|checks| Sandbox
+    Harness --> Report[("logs/debug_eval_report.txt")]
+    Dev([Developer or instructor]) -->|reads reports and traces| Report
+    Dev -->|reads| Logs

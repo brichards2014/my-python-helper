@@ -1,0 +1,47 @@
+flowchart TD
+    Player([Player]) -->|types a guess| UI["Streamlit app (app.py)<br/>or CLI (demo.py)"]
+
+    subgraph Guardrails_In [Input guardrails: logic_utils.py]
+        Parse[parse_guess<br/>rejects empty and non-numeric text]
+        Range[validate_range<br/>rejects guesses outside the range]
+    end
+    UI --> Parse --> Range
+    Range -->|rejected: message shown, no attempt used| UI
+    Range -->|valid guess| Game["Game logic<br/>check_guess, update_score"]
+    Game -->|hint and score| UI
+    Game -->|"(guess, outcome) history<br/>the secret is never sent"| Observe
+
+    subgraph Coach [Glitch Coach agent: coach/agent.py]
+        Observe["1. Observe<br/>feasible range, attempts left,<br/>wasted last guess?"] --> Plan["2. Plan<br/>pick situation and retrieval query"]
+        Plan --> Retrieve["3. Retrieve<br/>BM25 search"]
+        Retrieve --> Compose["4. Compose<br/>fill advice template from top hit"]
+        Compose --> Check{"5. Check<br/>coach/guardrails.py"}
+        Check -->|a check fails| Revise["Revise<br/>safe fallback advice"]
+        Revise --> Check
+        Check -->|all checks pass| Score["6. Confidence score"]
+    end
+
+    subgraph Sources [Retrieval sources]
+        K[("knowledge/*.md<br/>strategy notes")]
+        H[("data/past_games.json<br/>simulated game statistics")]
+    end
+    K --> Retrieve
+    H --> Retrieve
+
+    Score -.->|optional, if API key is set| LLM["LLM rewrite<br/>coach/llm.py"]
+    LLM -.->|rewrite must pass the same checks| Check
+    Score --> Advice[Advice, confidence, sources, trace]
+    Advice --> UI
+    UI -->|"Why this advice?" panel| Player
+
+    Score --> Logs[("logs/<br/>coach.log, traces")]
+
+    subgraph Testing [Testing and human review]
+        Pytest["pytest suite<br/>logic, retriever, agent, app flow"]
+        Harness["eval_harness.py<br/>scenarios, retrieval, guardrails,<br/>baseline vs coach simulation"]
+    end
+    Pytest -.->|checks| Coach
+    Harness -.->|checks| Coach
+    Harness --> Report[("logs/eval_report.txt")]
+    Dev([Developer]) -->|reads reports and traces| Report
+    Dev -->|reads| Logs
